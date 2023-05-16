@@ -1,6 +1,10 @@
 import { useState } from "react";
+import "./InputForm.css";
 
-const apiURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://remarkable-lokum-400dc6.netlify.app";
+const apiURL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://remarkable-lokum-400dc6.netlify.app";
 
 const Input = ({ value, onChange, label }) => (
   <label>
@@ -35,58 +39,124 @@ const InputForm = () => {
   const [experience, setExperience] = useState("");
   const [interestedRole, setInterestedRole] = useState("");
   const [companyInfo, setCompanyInfo] = useState("");
+  const [abilities, setAbilities] = useState(""); // ["ability1", "ability2"]
+  const [professionalValuesInterests, setProfessionalValuesInterests] =
+    useState(""); // ["value1", "value2"
+  const [softSkills, setSoftSkills] = useState(""); // ["softSkill1", "softSkill2"
   const [generatedContent, setGeneratedContent] = useState("");
-  const [generatedInterviewQuestion, setGeneratedInterviewQuestion] = useState("")
+  const [generatedInterviewQuestion, setGeneratedInterviewQuestion] =
+    useState("");
+  const [currentInputIndex, setCurrentInputIndex] = useState(0);
+  const maxStep = 6;
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const body = {
-      prompt:
-        `教育程度：${education}\n` + // education
-        `工作經驗：${experience}\n` + // experience
-        `職務：${interestedRole}\n` + // interestedRole
-        `公司資訊：${companyInfo}\n` + // companyInfo
-        "\n" +
-        "請根據以上資訊，撰寫一段約300字、口氣正式自信、且適合放在履歷表中的求職者用自我介紹。",
+      prompt: `請為一位學歷為${education}、擁有${experience}經歷的求職者，產生一段求職面試的300～400字中文自我介紹。他在${abilities}上有深厚的技術能力，並對${professionalValuesInterests}有一定的了解及熱忱，具有出色的${softSkills}。`,
     };
 
-    fetchAPI(`${apiURL}/job_applications/generate_content`, body).then((data) => {
-      setGeneratedContent(data.generated_content);
-    });
+    fetchAPI(`${apiURL}/job_applications/generate_content`, body).then(
+      (data) => {
+        setGeneratedContent(data.generated_content);
+      }
+    );
   };
 
   const generateInterviewQuestion = () => {
     const body = {
-      prompt:
-        `求職者教育程度：${education}\n` +
-        `求職者工作經驗：${experience}\n` +
-        `求職者應徵職務：${interestedRole}\n` +
-        `求職者應徵公司資訊：${companyInfo}\n` +
-        "\n" +
-        "請根據以上資訊，設想五個面試官可能會在面試時詢問的中文問題。",
+      prompt: `請產生一系列可能會在求職面試中，提問給一位教育程度為${education}、具有${experience}經驗的求職者的中文問題。該求職者精通${abilities}，並且對於${professionalValuesInterests}有所涉獵。`,
     };
 
-    fetchAPI(`${apiURL}/job_applications/generate_interview_question`, body).then((data) => {
+    fetchAPI(
+      `${apiURL}/job_applications/generate_interview_question`,
+      body
+    ).then((data) => {
       setGeneratedInterviewQuestion(data.generated_interview_questions);
+      console.log(data.generated_interview_questions);
     });
   };
 
+  const nextInput = () => {
+    setCurrentInputIndex((prevIndex) => prevIndex + 1);
+  };
+
+  const backToPreviousInput = () => {
+    setCurrentInputIndex((prevIndex) => prevIndex - 1);
+  };
+
+  const backToFirstInput = () => {
+    setCurrentInputIndex(0);
+  };
+
+  const inputs = [
+    <Input
+      value={education}
+      onChange={(e) => setEducation(e.target.value)}
+      label="學歷"
+    />,
+    <TextArea
+      value={experience}
+      onChange={(e) => setExperience(e.target.value)}
+      label="工作經驗"
+    />,
+    <Input
+      value={interestedRole}
+      onChange={(e) => setInterestedRole(e.target.value)}
+      label="感興趣的職位"
+    />,
+    <TextArea
+      value={companyInfo}
+      onChange={(e) => setCompanyInfo(e.target.value)}
+      label="面試公司資訊"
+    />,
+    <Input
+      value={abilities}
+      onChange={(e) => setAbilities(e.target.value)}
+      label="技術能力"
+    />,
+    <Input
+      value={professionalValuesInterests}
+      onChange={(e) => setProfessionalValuesInterests(e.target.value)}
+      label="專業價值與興趣"
+    />,
+    <Input
+      value={softSkills}
+      onChange={(e) => setSoftSkills(e.target.value)}
+      label="軟實力"
+    />,
+  ];
+
   return (
     <form onSubmit={handleSubmit}>
-      <Input value={education} onChange={(e) => setEducation(e.target.value)} label="Education" />
-      <TextArea value={experience} onChange={(e) => setExperience(e.target.value)} label="Experience" />
-      <Input value={interestedRole} onChange={(e) => setInterestedRole(e.target.value)} label="Interested Role" />
-      <TextArea value={companyInfo} onChange={(e) => setCompanyInfo(e.target.value)} label="Company Information" />
-      <button type="submit">Submit</button>
+      {inputs[currentInputIndex]}
+      {currentInputIndex < maxStep && (
+        <button type="button" onClick={nextInput}>
+          下一個（{inputs[currentInputIndex + 1].props.label}）
+        </button>
+      )}
+      {currentInputIndex > 0 && currentInputIndex <= maxStep && (
+        <button type="button" onClick={backToPreviousInput}>
+          上一個（{inputs[currentInputIndex - 1].props.label}）
+        </button>
+      )}
+      {currentInputIndex === maxStep && (
+        <button type="button" onClick={backToFirstInput}>
+          回到第一個
+        </button>
+      )}
+      <button type="submit">產生自我介紹</button>
       <p>{generatedContent}</p>
       <button type="button" onClick={generateInterviewQuestion}>
-        Generate Interview Question
+        產生面試問題
       </button>
-      <p>{generatedInterviewQuestion}</p>
+      <ul>
+        {generatedInterviewQuestion.split('\n').map((question, index) => (
+          <li key={index}>{question}</li>
+        ))}
+      </ul>
     </form>
   );
 };
 
 export default InputForm;
-
