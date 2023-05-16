@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const apiURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://job-application-backend.herokuapp.com";
+const apiURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://job-questions-generator-be.herokuapp.com";
 
 const Input = ({ value, onChange, label }) => (
   <label>
