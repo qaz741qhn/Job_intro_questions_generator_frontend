@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const apiURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://job-application-backend.herokuapp.com";
+
 const Input = ({ value, onChange, label }) => (
   <label>
     {label}:
@@ -49,7 +51,7 @@ const InputForm = () => {
         "請根據以上資訊，撰寫一段約300字、口氣正式自信、且適合放在履歷表中的求職者用自我介紹。",
     };
 
-    fetchAPI("http://localhost:3000/job_applications/generate_content", body).then((data) => {
+    fetchAPI(`${apiURL}/job_applications/generate_content`, body).then((data) => {
       setGeneratedContent(data.generated_content);
     });
   };
@@ -65,7 +67,7 @@ const InputForm = () => {
         "請根據以上資訊，設想五個面試官可能會在面試時詢問的中文問題。",
     };
 
-    fetchAPI("http://localhost:3000/job_applications/generate_interview_question", body).then((data) => {
+    fetchAPI(`${apiURL}/job_applications/generate_interview_question`, body).then((data) => {
       setGeneratedInterviewQuestion(data.generated_interview_questions);
     });
   };
