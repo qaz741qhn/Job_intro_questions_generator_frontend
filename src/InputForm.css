@@ -1,8 +1,8 @@
 form {
   display: grid;
   gap: 20px;
-  width: 90%;
-  max-width: 450px;
+  width: 100%;
+  max-width: 800px;
   margin: auto;
 }
 
@@ -67,3 +67,69 @@ ul {
 li {
   margin-bottom: 10px;
 }
+
+.progress-indicator {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #4CAF50;
+  transition: width 0.3s ease;
+}
+
+.card-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-step {
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  width: 60%;  /* 限制輸入框的寬度，讓按鈕有足夠的空間 */
+}
+
+.step-button {
+  background-color: transparent;
+  box-shadow: none;
+  margin: 0;
+  margin-left: 10px;
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.step-button:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+
+.card > label {
+  margin-top: 0;
+  margin-bottom: 2em;
+  color: #fff;
+}
+
+.generated-content,
+.generated-questions {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #4caf50;
+}
+

@@ -180,17 +180,33 @@ const InputForm = ({ apiURL }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {inputs[currentInputIndex]}
-      {currentInputIndex < maxStep && (
-        <button type="button" onClick={nextInput}>
-          下一個（{inputs[currentInputIndex + 1].props.label}）
-        </button>
-      )}
-      {currentInputIndex > 0 && currentInputIndex <= maxStep && (
-        <button type="button" onClick={backToPreviousInput}>
-          上一個（{inputs[currentInputIndex - 1].props.label}）
-        </button>
-      )}
+      <div className="progress-indicator">
+        <div
+          className="progress-bar"
+          style={{ width: `${(currentInputIndex / maxStep) * 100}%` }}
+        ></div>
+      </div>
+      <div className="card-steps">
+        {currentInputIndex > 0 && currentInputIndex <= maxStep && (
+          <div className="card-step">
+            <button type="button" onClick={backToPreviousInput} className="step-button">
+              👈上一個
+              <br></br>
+              （{inputs[currentInputIndex - 1].props.label}）
+            </button>
+          </div>
+        )}
+        <div className="card">{inputs[currentInputIndex]}</div>
+        {currentInputIndex < maxStep && (
+          <div className="card-step">
+            <button type="button" onClick={nextInput} className="step-button">
+              👉下一個
+              <br></br>
+              （{inputs[currentInputIndex + 1].props.label}）
+            </button>
+          </div>
+        )}
+      </div>
       {currentInputIndex === maxStep && (
         <button type="button" onClick={backToFirstInput}>
           回到第一個
@@ -202,7 +218,6 @@ const InputForm = ({ apiURL }) => {
           正在產生自我介紹...
         </button>
       )}
-      <p>{generatedContent}</p>
       {!isQuestionPending && (
         <button type="button" onClick={generateInterviewQuestion}>
           產生面試問題
@@ -213,11 +228,18 @@ const InputForm = ({ apiURL }) => {
           正在產生面試問題...
         </button>
       )}
-      <ul>
-        {generatedInterviewQuestion.split("\n").map((question, index) => (
-          <li key={index}>{question}</li>
-        ))}
-      </ul>
+      <div className="generated-content">
+        <h2>生成的自我介紹</h2>
+        <p>{generatedContent}</p>
+      </div>
+      <div className="generated-questions">
+        <h2>生成的面試問題</h2>
+        <ul>
+          {generatedInterviewQuestion.split("\n").map((question, index) => (
+            <li key={index}>{question}</li>
+          ))}
+        </ul>
+      </div>
     </form>
   );
 };
