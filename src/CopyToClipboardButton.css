@@ -1,0 +1,24 @@
+.copy {
+  background-color: #007BFF;
+  color: white;
+}
+
+.copy:hover {
+  background-color: #0069D9;
+}
+
+.copy-success {
+  background-color: grey;
+}
+
+.copy-success:hover {
+  background-color: #333;
+}
+
+.copy-fail {
+  background-color: red;
+}
+
+.copy-fail:hover {
+  background-color: #cc0000;
+}

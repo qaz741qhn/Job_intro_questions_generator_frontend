@@ -7,7 +7,7 @@ form {
 }
 
 input[type="text"], textarea {
-  width: 100%;
+  width: 95%;
   height: 5em;
   padding: 15px;
   border: none;
@@ -20,6 +20,15 @@ input[type="text"]:focus, textarea:focus {
   outline: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
+
+label {
+  color: #4CAF50;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 50px;
+}
+
 
 button {
   padding: 15px 25px;
@@ -35,6 +44,12 @@ button {
 button:hover {
   background-color: #45a049;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+button.disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
 }
 
 p {

@@ -1,80 +1,112 @@
 import { useState } from "react";
 import "./InputForm.css";
 
-const apiURL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : "https://remarkable-lokum-400dc6.netlify.app";
-
-const Input = ({ value, onChange, label }) => (
+const Input = ({ value, onChange, label, placeholder }) => (
   <label>
     {label}:
-    <input type="text" value={value} onChange={onChange} />
+    <input
+      type="text"
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+    />
   </label>
 );
 
-const TextArea = ({ value, onChange, label }) => (
+const TextArea = ({ value, onChange, label, placeholder }) => (
   <label>
     {label}:
-    <textarea value={value} onChange={onChange} />
+    <textarea value={value} onChange={onChange} placeholder={placeholder} />
   </label>
 );
 
-const fetchAPI = (url, body) => {
-  return fetch(url, {
+const fetchAPI = async (url, body) => {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 };
 
-const InputForm = () => {
-  const [education, setEducation] = useState("");
-  const [experience, setExperience] = useState("");
-  const [interestedRole, setInterestedRole] = useState("");
-  const [companyInfo, setCompanyInfo] = useState("");
-  const [abilities, setAbilities] = useState(""); // ["ability1", "ability2"]
-  const [professionalValuesInterests, setProfessionalValuesInterests] =
-    useState(""); // ["value1", "value2"
-  const [softSkills, setSoftSkills] = useState(""); // ["softSkill1", "softSkill2"
+const InputForm = ({ apiURL }) => {
+  const [formData, setFormData] = useState({
+    education: "",
+    experience: "",
+    interestedRole: "",
+    companyInfo: "",
+    abilities: [],
+    professionalValuesInterests: [],
+    softSkills: [],
+  });
+
   const [generatedContent, setGeneratedContent] = useState("");
   const [generatedInterviewQuestion, setGeneratedInterviewQuestion] =
     useState("");
   const [currentInputIndex, setCurrentInputIndex] = useState(0);
   const maxStep = 6;
+  const [isSelfIntroPending, setIsSelfIntroPending] = useState(false);
+  const [isQuestionPending, setIsQuestionPending] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const body = {
-      prompt: `請為一位學歷為${education}、擁有${experience}經歷的求職者，產生一段求職面試的300～400字中文自我介紹。他在${abilities}上有深厚的技術能力，並對${professionalValuesInterests}有一定的了解及熱忱，具有出色的${softSkills}。`,
-    };
-
-    fetchAPI(`${apiURL}/job_applications/generate_content`, body).then(
-      (data) => {
-        setGeneratedContent(data.generated_content);
-      }
-    );
+  const saveHistory = (history_type, keywords, content) => {
+    const body = { generated_history: { history_type, keywords, content } };
+    fetch(`${apiURL}/generated_histories`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).catch((error) => console.error("Error:", error));
   };
 
-  const generateInterviewQuestion = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSelfIntroPending(true);
+
     const body = {
-      prompt: `請產生一系列可能會在求職面試中，提問給一位教育程度為${education}、具有${experience}經驗的求職者的中文問題。該求職者精通${abilities}，並且對於${professionalValuesInterests}有所涉獵。`,
+      prompt: `請為一位學歷為${formData.education}、擁有${formData.experience}經驗的求職者，產生一段求職面試的300～400字中文自我介紹。`,
     };
 
-    fetchAPI(
-      `${apiURL}/job_applications/generate_interview_question`,
-      body
-    ).then((data) => {
+    try {
+      const data = await fetchAPI(
+        `${apiURL}/job_applications/generate_content`,
+        body
+      );
+      setGeneratedContent(data.generated_content);
+      saveHistory("自我介紹", formData, data.generated_content);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsSelfIntroPending(false);
+    }
+  };
+
+  const generateInterviewQuestion = async () => {
+    setIsQuestionPending(true);
+
+    const body = {
+      prompt: `請產生一系列可能會在求職面試中，提問給一位教育程度為${formData.education}、擁有${formData.experience}經驗的求職者的中文問題。該求職者精通${formData.abilities}，並且對於${formData.professionalValuesInterests}有所涉獵。`,
+    };
+
+    try {
+      const data = await fetchAPI(
+        `${apiURL}/job_applications/generate_interview_question`,
+        body
+      );
       setGeneratedInterviewQuestion(data.generated_interview_questions);
-      console.log(data.generated_interview_questions);
-    });
+      saveHistory("面試問題", formData, data.generated_interview_questions);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsQuestionPending(false);
+    }
   };
 
   const nextInput = () => {
@@ -89,43 +121,62 @@ const InputForm = () => {
     setCurrentInputIndex(0);
   };
 
-  const inputs = [
-    <Input
-      value={education}
-      onChange={(e) => setEducation(e.target.value)}
-      label="學歷"
-    />,
-    <TextArea
-      value={experience}
-      onChange={(e) => setExperience(e.target.value)}
-      label="工作經驗"
-    />,
-    <Input
-      value={interestedRole}
-      onChange={(e) => setInterestedRole(e.target.value)}
-      label="感興趣的職位"
-    />,
-    <TextArea
-      value={companyInfo}
-      onChange={(e) => setCompanyInfo(e.target.value)}
-      label="面試公司資訊"
-    />,
-    <Input
-      value={abilities}
-      onChange={(e) => setAbilities(e.target.value)}
-      label="技術能力"
-    />,
-    <Input
-      value={professionalValuesInterests}
-      onChange={(e) => setProfessionalValuesInterests(e.target.value)}
-      label="專業價值與興趣"
-    />,
-    <Input
-      value={softSkills}
-      onChange={(e) => setSoftSkills(e.target.value)}
-      label="軟實力"
-    />,
+  const inputFields = [
+    {
+      key: "education",
+      label: "學歷",
+      placeholder: "請輸入你的學歷",
+      Component: Input,
+    },
+    {
+      key: "experience",
+      label: "工作經驗",
+      placeholder: "請輸入你的工作經驗",
+      Component: TextArea,
+    },
+    {
+      key: "interestedRole",
+      label: "感興趣的職位",
+      placeholder: "請輸入你感興趣的職位",
+      Component: Input,
+    },
+    {
+      key: "companyInfo",
+      label: "面試公司資訊",
+      placeholder: "請輸入你面試的公司資訊",
+      Component: TextArea,
+    },
+    {
+      key: "abilities",
+      label: "技術能力",
+      placeholder: "請輸入你的技術能力，以逗號分隔，例如：React, JavaScript",
+      Component: Input,
+    },
+    {
+      key: "professionalValuesInterests",
+      label: "專業價值與興趣",
+      placeholder:
+        "請輸入你的專業價值與興趣，以逗號分隔，例如：前端開發, 資料分析",
+      Component: Input,
+    },
+    {
+      key: "softSkills",
+      label: "軟實力",
+      placeholder: "請輸入你的軟實力，以逗號分隔，例如：溝通能力, 團隊合作",
+      Component: Input,
+    },
   ];
+
+  const inputs = inputFields.map(({ key, label, placeholder, Component }) => (
+    <Component
+      value={formData[key]}
+      onChange={(e) =>
+        setFormData((prev) => ({ ...prev, [key]: e.target.value }))
+      }
+      label={label}
+      placeholder={placeholder}
+    />
+  ));
 
   return (
     <form onSubmit={handleSubmit}>
@@ -145,13 +196,25 @@ const InputForm = () => {
           回到第一個
         </button>
       )}
-      <button type="submit">產生自我介紹</button>
+      {!isSelfIntroPending && <button type="submit">產生自我介紹</button>}
+      {isSelfIntroPending && (
+        <button disabled className="disabled">
+          正在產生自我介紹...
+        </button>
+      )}
       <p>{generatedContent}</p>
-      <button type="button" onClick={generateInterviewQuestion}>
-        產生面試問題
-      </button>
+      {!isQuestionPending && (
+        <button type="button" onClick={generateInterviewQuestion}>
+          產生面試問題
+        </button>
+      )}
+      {isQuestionPending && (
+        <button disabled className="disabled">
+          正在產生面試問題...
+        </button>
+      )}
       <ul>
-        {generatedInterviewQuestion.split('\n').map((question, index) => (
+        {generatedInterviewQuestion.split("\n").map((question, index) => (
           <li key={index}>{question}</li>
         ))}
       </ul>

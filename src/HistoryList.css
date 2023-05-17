@@ -1,0 +1,43 @@
+/* HistoryList.css */
+.history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.history-item {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.history-item h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #007BFF;
+}
+
+.history-item p {
+  margin-bottom: 0;
+  color: #333;
+}
+
+.history-item li {
+  list-style: none;
+}
+
+.history-item .history-keywords {
+  color: #007BFF;
+  font-weight: bold;
+}
+
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.keyword {
+  cursor: pointer;
+}
