@@ -12,7 +12,7 @@ textarea {
   height: 15em;
   padding: 15px;
   font-size: 1.5rem;
-  border: none;
+  border: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.3s ease;
@@ -148,6 +148,7 @@ li {
 .generate-button {
   width: fit-content;
   margin-top: 5px;
+  font-weight: bold;
 }
 
 .card > label {
@@ -183,7 +184,6 @@ textarea {
 }
 
 @media (max-width: 768px) {
- 
   .progress-indicator {
     margin-bottom: 5vw;
   }
