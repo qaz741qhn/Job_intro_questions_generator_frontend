@@ -218,9 +218,8 @@ textarea {
 
   .step-button {
     width: 80px;
-    font-size: 10px;
     font-weight: normal;
-    padding: 0;
+    padding: 8px;
     margin-top: 10rem;
   }
 

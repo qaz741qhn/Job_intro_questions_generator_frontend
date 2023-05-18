@@ -7,6 +7,8 @@ const HistoryList = ({ apiURL }) => {
   const [buttonStates, setButtonStates] = useState([]);
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [pageIndex, setPageIndex] = useState(0);
+  const itemsPerPage = 3;
 
   useEffect(() => {
     fetchHistories();
@@ -58,7 +60,13 @@ const HistoryList = ({ apiURL }) => {
     )
     .filter((history) =>
       selectedType ? history.history_type === selectedType : true
-    );
+    )
+    .reverse();
+
+  const paginatedHistories = filteredHistories.slice(
+    pageIndex * itemsPerPage,
+    (pageIndex + 1) * itemsPerPage
+  );
 
   return (
     <div>
@@ -86,7 +94,7 @@ const HistoryList = ({ apiURL }) => {
       </div>
 
       <div className="history-list">
-        {filteredHistories.map((history, index) => (
+        {paginatedHistories.map((history, index) => (
           <div key={index} className="history-item">
             <div className="history-item-header">
               <h2>{history.history_type}</h2>
@@ -111,6 +119,25 @@ const HistoryList = ({ apiURL }) => {
             </p>
           </div>
         ))}
+      </div>
+      <div className="paginate">
+        <button
+          onClick={() => setPageIndex(pageIndex - 1)}
+          disabled={pageIndex === 0}
+        >
+          上一頁
+        </button>
+        <p>
+          第 {pageIndex + 1} / {Math.ceil(filteredHistories.length / itemsPerPage)} 頁
+        </p>
+        <button
+          onClick={() => setPageIndex(pageIndex + 1)}
+          disabled={
+            pageIndex === Math.ceil(filteredHistories.length / itemsPerPage) - 1
+          }
+        >
+          下一頁
+        </button>
       </div>
     </div>
   );
