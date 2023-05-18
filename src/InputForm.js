@@ -192,17 +192,21 @@ const InputForm = ({ apiURL }) => {
           className="progress-bar"
           style={{ width: `${(currentInputIndex / maxStep) * 100}%` }}
         >
-          {currentInputIndex !== (0 || maxStep) && `還有${maxStep - currentInputIndex}步`}
+          {currentInputIndex !== (0 || maxStep) &&
+            `還有${maxStep - currentInputIndex}步`}
           {currentInputIndex === maxStep && "完成 ✨"}
         </div>
       </div>
       <div className="card-steps">
         {currentInputIndex > 0 && currentInputIndex <= maxStep && (
           <div className="card-step">
-            <button type="button" onClick={backToPreviousInput} className="step-button">
+            <button
+              type="button"
+              onClick={backToPreviousInput}
+              className="step-button"
+            >
               👈上一個
-              <br></br>
-              （{inputs[currentInputIndex - 1].props.label}）
+              <br></br>（{inputs[currentInputIndex - 1].props.label}）
             </button>
           </div>
         )}
@@ -211,26 +215,37 @@ const InputForm = ({ apiURL }) => {
           <div className="card-step">
             <button type="button" onClick={nextInput} className="step-button">
               👉下一個
-              <br></br>
-              （{inputs[currentInputIndex + 1].props.label}）
+              <br></br>（{inputs[currentInputIndex + 1].props.label}）
             </button>
           </div>
         )}
       </div>
       <div className="generate-buttons">
         {currentInputIndex === maxStep && (
-          <button className="generate-button" type="button" onClick={backToFirstInput}>
+          <button
+            className="generate-button"
+            type="button"
+            onClick={backToFirstInput}
+          >
             回到第一個
           </button>
         )}
-        {!isSelfIntroPending && <button className="generate-button" type="submit">產生自我介紹</button>}
+        {!isSelfIntroPending && (
+          <button className="generate-button" type="submit">
+            產生自我介紹
+          </button>
+        )}
         {isSelfIntroPending && (
           <button disabled className="disabled">
             正在產生自我介紹...
           </button>
         )}
         {!isQuestionPending && (
-          <button className="generate-button" type="button" onClick={generateInterviewQuestion}>
+          <button
+            className="generate-button"
+            type="button"
+            onClick={generateInterviewQuestion}
+          >
             產生面試問題
           </button>
         )}
@@ -240,19 +255,26 @@ const InputForm = ({ apiURL }) => {
           </button>
         )}
       </div>
-      <Modal isOpen={modalType === "自我介紹" && isOpen} onClose={() => setIsOpen(false)}>
+      <Modal
+        isOpen={modalType === "自我介紹" && isOpen}
+        onClose={() => setIsOpen(false)}
+      >
         <div className="generated-content">
           <h2>生成的自我介紹</h2>
           <p>{generatedContent}</p>
         </div>
       </Modal>
-      <Modal isOpen={modalType === "面試問題" && isOpen} onClose={() => setIsOpen(false)}>
+      <Modal
+        isOpen={modalType === "面試問題" && isOpen}
+        onClose={() => setIsOpen(false)}
+      >
         <div className="generated-questions">
           <h2>生成的面試問題</h2>
           <ul>
-            {generatedInterviewQuestion.split("\n").map((question, index) => (
-              <li key={index}>{question}</li>
-            ))}
+            {generatedInterviewQuestion &&
+              generatedInterviewQuestion
+                .split("\n")
+                .map((question, index) => <li key={index}>{question}</li>)}
           </ul>
         </div>
       </Modal>
