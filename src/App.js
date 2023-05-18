@@ -6,10 +6,12 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
-  const apiURL =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://job-application-backend.herokuapp.com";
+  // const apiURL =
+  //   process.env.NODE_ENV === "development"
+  //     ? "http://localhost:3000"
+  //     : "https://job-application-backend.herokuapp.com";
+
+  const apiURL = "https://job-application-backend.herokuapp.com";
 
   return (
     <Router>
