@@ -9,7 +9,7 @@ function App() {
   const apiURL =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://remarkable-lokum-400dc6.netlify.app";
+      : "https://job-application-backend.herokuapp.com";
 
   return (
     <Router>
