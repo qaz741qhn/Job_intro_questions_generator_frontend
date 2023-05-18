@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./InputForm.css";
+import Modal from "./Module";
 
 const Input = ({ value, onChange, label, placeholder }) => (
   <label>
@@ -54,6 +55,8 @@ const InputForm = ({ apiURL }) => {
   const maxStep = 6;
   const [isSelfIntroPending, setIsSelfIntroPending] = useState(false);
   const [isQuestionPending, setIsQuestionPending] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalType, setModalType] = useState(null);
 
   const saveHistory = (history_type, keywords, content) => {
     const body = { generated_history: { history_type, keywords, content } };
@@ -81,6 +84,8 @@ const InputForm = ({ apiURL }) => {
       );
       setGeneratedContent(data.generated_content);
       saveHistory("自我介紹", formData, data.generated_content);
+      setModalType("自我介紹");
+      setIsOpen(true);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -102,6 +107,8 @@ const InputForm = ({ apiURL }) => {
       );
       setGeneratedInterviewQuestion(data.generated_interview_questions);
       saveHistory("面試問題", formData, data.generated_interview_questions);
+      setModalType("面試問題");
+      setIsOpen(true);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -184,7 +191,10 @@ const InputForm = ({ apiURL }) => {
         <div
           className="progress-bar"
           style={{ width: `${(currentInputIndex / maxStep) * 100}%` }}
-        ></div>
+        >
+          {currentInputIndex !== (0 || maxStep) && `還有${maxStep - currentInputIndex}步`}
+          {currentInputIndex === maxStep && "完成 ✨"}
+        </div>
       </div>
       <div className="card-steps">
         {currentInputIndex > 0 && currentInputIndex <= maxStep && (
@@ -207,39 +217,45 @@ const InputForm = ({ apiURL }) => {
           </div>
         )}
       </div>
-      {currentInputIndex === maxStep && (
-        <button type="button" onClick={backToFirstInput}>
-          回到第一個
-        </button>
-      )}
-      {!isSelfIntroPending && <button type="submit">產生自我介紹</button>}
-      {isSelfIntroPending && (
-        <button disabled className="disabled">
-          正在產生自我介紹...
-        </button>
-      )}
-      {!isQuestionPending && (
-        <button type="button" onClick={generateInterviewQuestion}>
-          產生面試問題
-        </button>
-      )}
-      {isQuestionPending && (
-        <button disabled className="disabled">
-          正在產生面試問題...
-        </button>
-      )}
-      <div className="generated-content">
-        <h2>生成的自我介紹</h2>
-        <p>{generatedContent}</p>
+      <div className="generate-buttons">
+        {currentInputIndex === maxStep && (
+          <button className="generate-button" type="button" onClick={backToFirstInput}>
+            回到第一個
+          </button>
+        )}
+        {!isSelfIntroPending && <button className="generate-button" type="submit">產生自我介紹</button>}
+        {isSelfIntroPending && (
+          <button disabled className="disabled">
+            正在產生自我介紹...
+          </button>
+        )}
+        {!isQuestionPending && (
+          <button className="generate-button" type="button" onClick={generateInterviewQuestion}>
+            產生面試問題
+          </button>
+        )}
+        {isQuestionPending && (
+          <button disabled className="disabled">
+            正在產生面試問題...
+          </button>
+        )}
       </div>
-      <div className="generated-questions">
-        <h2>生成的面試問題</h2>
-        <ul>
-          {generatedInterviewQuestion.split("\n").map((question, index) => (
-            <li key={index}>{question}</li>
-          ))}
-        </ul>
-      </div>
+      <Modal isOpen={modalType === "自我介紹" && isOpen} onClose={() => setIsOpen(false)}>
+        <div className="generated-content">
+          <h2>生成的自我介紹</h2>
+          <p>{generatedContent}</p>
+        </div>
+      </Modal>
+      <Modal isOpen={modalType === "面試問題" && isOpen} onClose={() => setIsOpen(false)}>
+        <div className="generated-questions">
+          <h2>生成的面試問題</h2>
+          <ul>
+            {generatedInterviewQuestion.split("\n").map((question, index) => (
+              <li key={index}>{question}</li>
+            ))}
+          </ul>
+        </div>
+      </Modal>
     </form>
   );
 };

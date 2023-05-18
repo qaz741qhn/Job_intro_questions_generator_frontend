@@ -70,20 +70,21 @@ li {
 
 .progress-indicator {
   width: 100%;
-  background-color: #f3f3f3;
   border-radius: 20px;
+  color: #fff;
   overflow: hidden;
 }
 
 .progress-bar {
-  height: 10px;
+  height: 20px;
+  font-size: 14px;
   background-color: #4CAF50;
   transition: width 0.3s ease;
 }
 
 .card-steps {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -110,6 +111,15 @@ li {
 .step-button:hover {
   background-color: transparent;
   box-shadow: none;
+}
+
+.generate-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.generate-button {
+  width: fit-content;
 }
 
 
