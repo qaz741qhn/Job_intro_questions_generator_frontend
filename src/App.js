@@ -18,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/history" element={<HistoryList apiURL={apiURL} />} />
           <Route path="/" element={<InputForm apiURL={apiURL} />} />
+          {console.log("Current environment: ", process.env.NODE_ENV)}
         </Routes>
       </div>
     </Router>
