@@ -13,17 +13,17 @@
   color: #333;
 }
 
-.navbar .links {
-  display: flex;
-  gap: 15px;
-}
-
-.navbar .links a {
+.navbar a {
   text-decoration: none;
   color: #333;
   transition: color 0.3s ease;
 }
 
-.navbar .links a:hover {
+.navbar .links {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar a:hover {
   color: #007BFF;
 }

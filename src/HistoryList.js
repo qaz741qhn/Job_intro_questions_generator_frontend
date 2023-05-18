@@ -5,8 +5,8 @@ import CopyToClipboardButton from "./CopyToClipboardButton";
 const HistoryList = ({ apiURL }) => {
   const [histories, setHistories] = useState([]);
   const [buttonStates, setButtonStates] = useState([]);
-  const [selectedKeyword, setSelectedKeyword] = useState(null);
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedKeyword, setSelectedKeyword] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   useEffect(() => {
     fetchHistories();

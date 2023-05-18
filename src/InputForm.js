@@ -132,44 +132,43 @@ const InputForm = ({ apiURL }) => {
     {
       key: "education",
       label: "學歷",
-      placeholder: "請輸入你的學歷",
+      placeholder: "大學、碩士...",
       Component: Input,
     },
     {
       key: "experience",
       label: "工作經驗",
-      placeholder: "請輸入你的工作經驗",
+      placeholder: "網頁開發2年...",
       Component: TextArea,
     },
     {
       key: "interestedRole",
       label: "感興趣的職位",
-      placeholder: "請輸入你感興趣的職位",
+      placeholder: "前端工程師、資料分析師...",
       Component: Input,
     },
     {
       key: "companyInfo",
       label: "面試公司資訊",
-      placeholder: "請輸入你面試的公司資訊",
+      placeholder: "企業理念、產品服務...",
       Component: TextArea,
     },
     {
       key: "abilities",
       label: "技術能力",
-      placeholder: "請輸入你的技術能力，以逗號分隔，例如：React, JavaScript",
+      placeholder: "React, JavaScript...",
       Component: Input,
     },
     {
       key: "professionalValuesInterests",
       label: "專業價值與興趣",
-      placeholder:
-        "請輸入你的專業價值與興趣，以逗號分隔，例如：前端開發, 資料分析",
+      placeholder: "前端開發, 資料分析...",
       Component: Input,
     },
     {
       key: "softSkills",
       label: "軟實力",
-      placeholder: "請輸入你的軟實力，以逗號分隔，例如：溝通能力, 團隊合作",
+      placeholder: "溝通能力, 團隊合作...",
       Component: Input,
     },
   ];
@@ -198,27 +197,34 @@ const InputForm = ({ apiURL }) => {
         </div>
       </div>
       <div className="card-steps">
-        {currentInputIndex > 0 && currentInputIndex <= maxStep && (
-          <div className="card-step">
-            <button
-              type="button"
-              onClick={backToPreviousInput}
-              className="step-button"
-            >
-              👈上一個
-              <br></br>（{inputs[currentInputIndex - 1].props.label}）
-            </button>
+        <div className="card-step">
+          <button
+            type="button"
+            onClick={backToPreviousInput}
+            className={`${currentInputIndex > 0 && currentInputIndex <= maxStep ? 'step-button' : 'hide-button'}`}
+            disabled={currentInputIndex === 0}
+          >
+            👈上一個
+            <br></br>（{inputs[currentInputIndex - 1]?.props.label}）
+          </button>
+        </div>
+        <div className="card">
+          <div className="card-title">
+            {inputs[currentInputIndex].props.label}
           </div>
-        )}
-        <div className="card">{inputs[currentInputIndex]}</div>
-        {currentInputIndex < maxStep && (
-          <div className="card-step">
-            <button type="button" onClick={nextInput} className="step-button">
-              👉下一個
-              <br></br>（{inputs[currentInputIndex + 1].props.label}）
-            </button>
-          </div>
-        )}
+          {inputs[currentInputIndex]}
+        </div>
+        <div className="card-step">
+          <button
+            type="button"
+            onClick={nextInput}
+            className={`${currentInputIndex === maxStep ? 'hide-button' : 'step-button'}`}
+            disabled={currentInputIndex === maxStep}
+          >
+            👉下一個
+            <br></br>（{inputs[currentInputIndex + 1]?.props.label}）
+          </button>
+        </div>
       </div>
       <div className="generate-buttons">
         {currentInputIndex === maxStep && (
