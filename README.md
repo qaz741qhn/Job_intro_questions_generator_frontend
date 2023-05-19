@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# Job Interview Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+Welcome to the Job Interview Generator! This innovative tool is designed to help you prepare for job interviews by generating custom self-introduction and interview questions based on the keywords you provide. It also allows you to view a history of all generated content. Try it out and ace your next interview!
 
-In the project directory, you can run:
+Access the live application [here](https://job-generator-application.herokuapp.com/).
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Generate Self-Introductions**: Input relevant keywords to generate a personalized self-introduction that matches your profile and the job you're applying for.
+- **Generate Interview Questions**: Get a variety of potential interview questions based on your selected keywords. Practice answering these to better prepare for your job interviews.
+- **History**: Keep track of all your past generated self-introductions and interview questions. Review and revisit them anytime for further practice.
+- **Copy to Clipboard**: Easily copy your generated content to your clipboard for pasting in other documents or note-taking apps.
+  
+## How to Use
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Visit the [application website](https://job-generator-application.herokuapp.com/).
+2. Choose to generate either a self-introduction or interview question.
+3. Input relevant keywords and hit "Generate".
+4. Your custom self-introduction or interview question will be displayed on the screen. You can choose to copy it to your clipboard for future reference.
+5. To practice another scenario, simply choose different keywords or change the generation type, and hit "Generate" again.
 
-### `npm test`
+## Contributions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Contributions, issues and feature requests are welcome. Feel free to check the [issues page](https://github.com/qaz741qhn/Job_intro_questions_generator_frontend/issues) if you want to contribute.
 
-### `npm run build`
+## Contact
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+If you have any questions or suggestions, feel free to reach out!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
