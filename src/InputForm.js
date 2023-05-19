@@ -204,8 +204,8 @@ const InputForm = ({ apiURL }) => {
             className={`${currentInputIndex > 0 && currentInputIndex <= maxStep ? 'step-button' : 'hide-button'}`}
             disabled={currentInputIndex === 0}
           >
-            👈上一個
-            <br></br>（{inputs[currentInputIndex - 1]?.props.label}）
+            👈<br></br>
+            {inputs[currentInputIndex - 1]?.props.label}
           </button>
         </div>
         <div className="card">
@@ -221,8 +221,8 @@ const InputForm = ({ apiURL }) => {
             className={`${currentInputIndex === maxStep ? 'hide-button' : 'step-button'}`}
             disabled={currentInputIndex === maxStep}
           >
-            👉下一個
-            <br></br>（{inputs[currentInputIndex + 1]?.props.label}）
+            👉<br></br>
+            {inputs[currentInputIndex + 1]?.props.label}
           </button>
         </div>
       </div>

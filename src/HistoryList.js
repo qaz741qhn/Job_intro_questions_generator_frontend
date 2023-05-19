@@ -9,7 +9,7 @@ const HistoryList = ({ apiURL }) => {
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
 
 
   const {
