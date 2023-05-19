@@ -1,10 +1,8 @@
-/* HistoryList.css */
 .menu-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 20px;
 }
 
 .keyword-selector {
@@ -69,21 +67,37 @@
 .history-item p {
   margin-bottom: 0;
   color: #333;
+  max-height: 300px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 10;
+  display: -webkit-box;
+  line-height: 1.6em;
 }
 
 .history-item li {
   list-style: none;
 }
 
+.history-item a {
+  text-decoration: none;
+}
+
 .history-item .history-keywords {
   color: #007BFF;
   font-weight: bold;
+  margin-top: 1em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .history-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
 }
 
 .keyword {
@@ -94,7 +108,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 20px;
+  padding-bottom: 1.5em;
 }
 
 .paginate button {

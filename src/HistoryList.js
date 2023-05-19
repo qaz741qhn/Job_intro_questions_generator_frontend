@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./HistoryList.css";
+import { NavLink } from "react-router-dom";
 import CopyToClipboardButton from "./CopyToClipboardButton";
+import useFetch from "./useFetch";
 
 const HistoryList = ({ apiURL }) => {
-  const [histories, setHistories] = useState([]);
   const [buttonStates, setButtonStates] = useState([]);
   const [selectedKeyword, setSelectedKeyword] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [pageIndex, setPageIndex] = useState(0);
   const itemsPerPage = 3;
 
-  useEffect(() => {
-    fetchHistories();
-  }, []);
 
-  const fetchHistories = () => {
-    fetch(`${apiURL}/generated_histories`)
-      .then((response) => response.json())
-      .then((data) => {
-        setHistories(data);
-        setButtonStates(new Array(data.length).fill("複製"));
-      })
-      .catch((error) => console.error("Error:", error));
-  };
+  const {
+    data: fetchHistories,
+    isPending,
+    error,
+  } = useFetch(`${apiURL}/generated_histories`);
+  
 
   const handleCopy = (index) => {
     setButtonStates(
       buttonStates.map((state, i) => (i === index ? "複製成功" : "複製"))
     );
   };
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [selectedKeyword]);
 
   const handleKeywordClick = (keyword) => {
     setSelectedKeyword(keyword);
@@ -52,7 +51,7 @@ const HistoryList = ({ apiURL }) => {
     return uniqueKeywords.filter((keyword) => keyword.trim() !== "");
   };
 
-  const filteredHistories = histories
+  const filteredHistories = fetchHistories && fetchHistories
     .filter((history) =>
       selectedKeyword
         ? prepareKeywords(history.keywords).includes(selectedKeyword)
@@ -63,10 +62,16 @@ const HistoryList = ({ apiURL }) => {
     )
     .reverse();
 
-  const paginatedHistories = filteredHistories.slice(
+  const paginatedHistories = filteredHistories && filteredHistories.slice(
     pageIndex * itemsPerPage,
     (pageIndex + 1) * itemsPerPage
   );
+
+  useEffect(() => {
+    setButtonStates(new Array(paginatedHistories && paginatedHistories.length).fill("複製"));
+  }, [paginatedHistories]);  
+
+  console.log("selectedKeyword: ", selectedKeyword);
 
   return (
     <div>
@@ -94,10 +99,12 @@ const HistoryList = ({ apiURL }) => {
       </div>
 
       <div className="history-list">
-        {paginatedHistories.map((history, index) => (
+        {paginatedHistories && paginatedHistories.map((history, index) => (
           <div key={index} className="history-item">
             <div className="history-item-header">
-              <h2>{history.history_type}</h2>
+              <NavLink to={`/history/${history.id}`}>
+                <h2>{history.history_type}</h2>
+              </NavLink>
               <CopyToClipboardButton
                 textToCopy={history.content}
                 buttonText={buttonStates[index]}
@@ -128,12 +135,12 @@ const HistoryList = ({ apiURL }) => {
           上一頁
         </button>
         <p>
-          第 {pageIndex + 1} / {Math.ceil(filteredHistories.length / itemsPerPage)} 頁
+          第 {pageIndex + 1} / {Math.ceil(filteredHistories && (filteredHistories.length / itemsPerPage))} 頁
         </p>
         <button
           onClick={() => setPageIndex(pageIndex + 1)}
           disabled={
-            pageIndex === Math.ceil(filteredHistories.length / itemsPerPage) - 1
+            pageIndex === Math.ceil(filteredHistories && (filteredHistories.length / itemsPerPage)) - 1
           }
         >
           下一頁
