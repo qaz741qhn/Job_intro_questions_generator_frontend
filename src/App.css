@@ -7,3 +7,8 @@ h1 {
   color: #4CAF50;
   margin-bottom: 50px;
 }
+
+.is-pending {
+  color: #007BFF;
+  margin: 50px 0;
+}

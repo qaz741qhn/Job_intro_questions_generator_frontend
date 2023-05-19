@@ -127,6 +127,10 @@ const HistoryList = ({ apiURL }) => {
           </div>
         ))}
       </div>
+
+      {isPending && <div className="is-pending">讀取中...</div>}
+      {error && <div className="error">{error}</div>}
+
       <div className="paginate">
         <button
           onClick={() => setPageIndex(pageIndex - 1)}

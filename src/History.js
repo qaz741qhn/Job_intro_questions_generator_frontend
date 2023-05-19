@@ -15,7 +15,7 @@ const History = ({apiURL}) => {
   return (
     <div className="container">
       <div className="history-details">
-        {isPending && <div>讀取中...</div>}
+        {isPending && <div className="is-pending">讀取中...</div>}
         {generatedHistory && (
           <div className="content-container">
             <div className="content">{generatedHistory.content}</div>
