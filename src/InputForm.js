@@ -74,7 +74,7 @@ const InputForm = ({ apiURL }) => {
     setIsSelfIntroPending(true);
 
     const body = {
-      prompt: `請為一位學歷為${formData.education}、擁有${formData.experience}經驗的求職者，產生一段求職面試的300～400字中文自我介紹。`,
+      prompt: `請為一位學歷為${formData.education}、擁有${formData.experience}經驗的求職者，產生一段精簡扼要、充滿吸引力、專為求職面試使用的100～200字中文自我介紹。`,
     };
 
     try {
