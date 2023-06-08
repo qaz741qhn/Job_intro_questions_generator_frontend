@@ -12,7 +12,7 @@ function App() {
   //     ? "http://localhost:3000"
   //     : "https://job-application-backend.herokuapp.com";
 
-  const apiURL = "https://multi-api.herokuapp.com/";
+  const apiURL = "https://multi-api.herokuapp.com";
 
   return (
     <Router>
